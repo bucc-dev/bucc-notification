@@ -1,0 +1,17 @@
+{
+  "name": "bucc-notification",
+  "version": "1.0.0",
+  "description": "This repo contains excellently written code for the BUCC notification service",
+  "main": "index.js",
+  "husky": {
+    "hooks": {
+      "pre-commit": "bash .husky/pre-commit"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.4"
+  }
+}

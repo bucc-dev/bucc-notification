@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Runs Linter
+npm run lint --prefix receiver
+npm run lint --prefix sender
+
+# Runs Test

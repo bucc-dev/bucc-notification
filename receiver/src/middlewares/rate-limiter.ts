@@ -2,7 +2,7 @@ import {rateLimit, RateLimitRequestHandler} from 'express-rate-limit';
 
 /**
  * Rate limiter middleware
- * @returns RateLimitRequestHandler
+ * @returns {RateLimitRequestHandler}
  */
 const rateLimiter = (): RateLimitRequestHandler => {
   return rateLimit({

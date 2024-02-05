@@ -14,7 +14,7 @@ const DB_URI =
     ? process.env.DB_URI_PROD
     : environment === 'staging'
     ? process.env.DB_URI_STAGING
-    : process.env.DB_URI_LOCAL;
+    : process.env.DB_URI_LOCAL || 'mongodb://localhost:27017';
 
 // register middlewares
 const maxNumberOfProxies = 1; // the nginx proxy

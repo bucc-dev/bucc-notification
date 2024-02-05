@@ -1,26 +1,22 @@
 import {Request, Response} from 'express';
 import USERMODEL from '../models/user.model';
 import KEYMODEL from '../models/key.model';
-import {randomBytes, createHash} from 'crypto';
+import {createHash} from 'crypto';
+import generateApiKey from '../utils/generate-api-key';
 
-/**
- * Registers a new user and returns an API key
- * @param {Request} req
- * @param {Response} res
- * @returns Promise<void>
- */
 export async function register(req: Request, res: Response): Promise<void> {
   if (!requestVerification(req, res)) return;
   const {email, projectName} = req.body;
 
   try {
     const user = await USERMODEL.create({email, projectName});
-    const newKey = await KEYMODEL.create({
+    const newKey = generateApiKey();
+    await KEYMODEL.create({
       userId: user._id,
-      key: randomBytes(32).toString('hex'),
+      key: hashFunction(newKey),
     });
 
-    res.status(201).json({key: hashFunction(newKey.key)});
+    res.status(201).json({key: newKey});
   } catch (error: any) {
     console.error(error.message);
     if (error.code === 11000) {
@@ -32,15 +28,11 @@ export async function register(req: Request, res: Response): Promise<void> {
 }
 
 const hashFunction = (key: string): string => {
-  return createHash('sha256').update(key).digest('hex');
+  const hash = createHash('sha256');
+  hash.update(key + process.env.REGISTER_HASH_SALT);
+  return hash.digest('hex');
 };
 
-/**
- * Verifies the request body
- * @param {Request} req
- * @param {Response} res
- * @returns {boolean} true if the request is valid, false otherwise
- */
 const requestVerification = (req: Request, res: Response): boolean => {
   const {email, projectName} = req.body;
 

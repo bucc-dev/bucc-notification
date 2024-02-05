@@ -1,9 +1,5 @@
 import {rateLimit, RateLimitRequestHandler} from 'express-rate-limit';
 
-/**
- * Rate limiter middleware
- * @returns {RateLimitRequestHandler}
- */
 const rateLimiter = (): RateLimitRequestHandler => {
   return rateLimit({
     windowMs: 60 * 1000 * 2,

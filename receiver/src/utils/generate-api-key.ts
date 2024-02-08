@@ -1,12 +1,13 @@
-import { randomBytes } from 'crypto';
+import {randomBytes} from 'crypto';
 
-function generateApiKey(length: number = 32): string {
-  const charset: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let apiKey: string = "";
+function generateApiKey(length = 32): string {
+  const charset =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let apiKey = '';
 
-  const randomBytesArray: Uint8Array = randomBytes(length);
+  const randomBytesArray = randomBytes(length);
   randomBytesArray.forEach(byte => {
-    const randomIndex: number = byte % charset.length;
+    const randomIndex = byte % charset.length;
     apiKey += charset.charAt(randomIndex);
   });
 

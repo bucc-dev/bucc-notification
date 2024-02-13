@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
 import USERMODEL from '../models/user.model';
 import KEYMODEL from '../models/key.model';
-import {createHash} from 'crypto';
 import generateApiKey from '../utils/generate-api-key';
+import hashApiKey from '../utils/hash-api-key';
 
 export async function register(req: Request, res: Response): Promise<void> {
   if (!requestVerification(req, res)) return;
@@ -13,7 +13,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     const newKey = generateApiKey();
     await KEYMODEL.create({
       userId: user._id,
-      key: hashFunction(newKey),
+      key: hashApiKey(newKey),
     });
 
     res.status(201).json({key: newKey});
@@ -26,12 +26,6 @@ export async function register(req: Request, res: Response): Promise<void> {
     res.status(500).json({message: 'Internal server error'});
   }
 }
-
-const hashFunction = (key: string): string => {
-  const hash = createHash('sha256');
-  hash.update(key + process.env.REGISTER_HASH_SALT);
-  return hash.digest('hex');
-};
 
 const requestVerification = (req: Request, res: Response): boolean => {
   const {email, projectName} = req.body;
